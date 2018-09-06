@@ -1,5 +1,7 @@
 # pot_addic7ed
- DAUM PotPlayer extension for addic7ed.com subtitle search (English ONLY!)
+ DAUM PotPlayer extension for addic7ed.com subtitle search 
  
- Insert you credential cookies (wikisubtitlesuser,wikisubtitlespass) on top of the file "SubtitleSearch - addic7ed.as" (you can get them from the browser cookies after you login)!
- Copy "SubtitleSearch - addic7ed.as" to C:\Program Files\DAUM\PotPlayer\Extention\Subtitle\Search
+ Tested with PotPlayer ver. 1.7.11032 32bit - for most recent versions account login may NOT work! 
+
+ Copy "SubtitleSearch - addic7ed.as" to "\Extention\Subtitle\Search" subfolder
+ 
