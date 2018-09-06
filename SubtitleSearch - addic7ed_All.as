@@ -19,8 +19,8 @@
 
 bool cookie = true;
 string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
-// Insert your addic7ed.com credentials(wikisubtitlesuser,wikisubtitlespass) below (you can get them from the browser cookies after you login)!
-string Header = "Referer: http://www.addic7ed.com/ \n Cookie: wikisubtitlesuser=xxxxxx; wikisubtitlespass=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx;"; 
+string Username="";
+string Password="";
 uint64 GetHash(string FileName)
 {
 	int64 size = 0;
@@ -69,10 +69,34 @@ string GetLanguages()
 
 string ServerCheck(string User, string Pass)
 {
-	string ret = HostUrlGetString(API_URL);
+//	string ret = HostUrlGetString(API_URL);
+
 	return "200 OK";
 }
-string version1 ;
+
+
+string ServerLogin(string User, string Pass)
+{
+	Username=User;
+	Password=Pass;
+//	HostOpenConsole();
+	uint64 http = HostOpenHTTP("http://www.addic7ed.com/dologin.php", UserAgent,"Host: www.addic7ed.com\r\nAccept: */*\r\nContent-Length: 45\r\nContent-Type: application/x-www-form-urlencoded", "username="+Username+"&password="+Password+"&remember=true");
+	string headers1 = HostGetHeaderHTTP(http);
+	
+	int stat = HostGetStatusHTTP(http);
+		
+	HostCloseHTTP(http);
+	
+//	HostPrintUTF8(Username+Password+stat + headers1  );
+
+
+	return "OK";
+
+}
+
+
+
+
 
 array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 {
@@ -84,13 +108,21 @@ array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 	string seasonNumber = string(MovieMetaData["seasonNumber"]);
 	string episodeNumber = string(MovieMetaData["episodeNumber"]);
 	string url = "http://www.addic7ed.com/serie/" + title + "/" + seasonNumber + "/" + episodeNumber + "/0";
-	string text = HostUrlGetString(url, UserAgent,Header,"",cookie);
+	//string text = HostUrlGetString(url, UserAgent,Header,"",cookie);
+	string text = HostUrlGetString(url, UserAgent);
 	array<string> lines = text.split("\n");
 	string id;
 	string lang;
 	string status;
 	string ver;
 	int verpos;
+
+
+
+
+
+
+
 	for (int i = 0, len = lines.size(); i < len; i++)
 	{
 		string line = lines[i];
@@ -146,7 +178,7 @@ array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 string SubtitleDownload(string id)
 {
 	string url = "http://www.addic7ed.com" + id;
-	return HostUrlGetString(url,UserAgent,Header,"",cookie);
+	return HostUrlGetString(url,UserAgent);
 }
 
 
