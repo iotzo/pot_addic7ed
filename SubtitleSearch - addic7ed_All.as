@@ -127,7 +127,7 @@ array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 				DbTitle = lines1[i].substr(lines1[i].find(">")+1,lines1[i].find("<")-lines1[i].find(">")-1);
 				int num = DbTitle.find("'");
 				DbTitle.replace("'","");
-				if (DbTitle == title)
+				if (HostCompareMovieName(DbTitle,title))
 				{
 					title.insert(num,"'");
 					url = "http://www.addic7ed.com/serie/" + title + "/" + seasonNumber + "/" + episodeNumber + "/0";
