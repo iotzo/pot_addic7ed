@@ -79,7 +79,6 @@ string ServerLogin(string User, string Pass)
 {
 	Username=User;
 	Password=Pass;
-//	HostOpenConsole();
 	uint64 http = HostOpenHTTP("http://www.addic7ed.com/dologin.php", UserAgent,"Host: www.addic7ed.com\r\nAccept: */*\r\nContent-Length: 45\r\nContent-Type: application/x-www-form-urlencoded", "username="+Username+"&password="+Password+"&remember=true");
 	string headers1 = HostGetHeaderHTTP(http);
 	
@@ -87,7 +86,6 @@ string ServerLogin(string User, string Pass)
 		
 	HostCloseHTTP(http);
 	
-//	HostPrintUTF8(Username+Password+stat + headers1  );
 
 
 	return "OK";
@@ -108,7 +106,6 @@ array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 	string seasonNumber = string(MovieMetaData["seasonNumber"]);
 	string episodeNumber = string(MovieMetaData["episodeNumber"]);
 	string url = "http://www.addic7ed.com/serie/" + title + "/" + seasonNumber + "/" + episodeNumber + "/0";
-	//string text = HostUrlGetString(url, UserAgent,Header,"",cookie);
 	string text = HostUrlGetString(url, UserAgent);
 	array<string> lines = text.split("\n");
 	string id;
@@ -118,8 +115,29 @@ array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 	int verpos;
 
 
-
-
+	if (text.empty())
+	{
+				//check for "'"'s in the title :)
+			string DbTitle;
+			string text1 = HostUrlGetString(API_URL, UserAgent);
+			string text2 = text1.substr(text1.find("select name=\"qsShow\""),text1.find("id=\"qsSeason\"")-text1.find("select name=\"qsShow\""));
+			array<string> lines1 = text2.split("option value=");
+			for (int i = 0, len = lines1.size(); i < len; i++)
+			{
+				DbTitle = lines1[i].substr(lines1[i].find(">")+1,lines1[i].find("<")-lines1[i].find(">")-1);
+				int num = DbTitle.find("'");
+				DbTitle.replace("'","");
+				if (DbTitle == title)
+				{
+					title.insert(num,"'");
+					url = "http://www.addic7ed.com/serie/" + title + "/" + seasonNumber + "/" + episodeNumber + "/0";
+					text = HostUrlGetString(url, UserAgent);
+					lines = text.split("\n");
+					break;
+				}
+			}
+		
+	}
 
 
 
@@ -170,8 +188,10 @@ array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 				item["format"] = "srt";
 				ret.insertLast(item);
 			}
+			
 		}
 	}
+	
 	return ret;
 }
  
