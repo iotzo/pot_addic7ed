@@ -21,6 +21,8 @@ bool cookie = true;
 string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
 string Username="";
 string Password="";
+string Header = "Referer: http://www.addic7ed.com/ \n Cookie: wikisubtitlesuser=xxxxxx; wikisubtitlespass=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx;"; 
+
 uint64 GetHash(string FileName)
 {
 	int64 size = 0;
@@ -106,7 +108,7 @@ array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 	string seasonNumber = string(MovieMetaData["seasonNumber"]);
 	string episodeNumber = string(MovieMetaData["episodeNumber"]);
 	string url = "http://www.addic7ed.com/serie/" + title + "/" + seasonNumber + "/" + episodeNumber + "/0";
-	string text = HostUrlGetString(url, UserAgent);
+	string text = HostUrlGetString(url, UserAgent,Header,"",cookie);
 	array<string> lines = text.split("\n");
 	string id;
 	string lang;
@@ -198,7 +200,7 @@ array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 string SubtitleDownload(string id)
 {
 	string url = "http://www.addic7ed.com" + id;
-	return HostUrlGetString(url,UserAgent);
+	return HostUrlGetString(url,UserAgent,Header,"",cookie);
 }
 
 
