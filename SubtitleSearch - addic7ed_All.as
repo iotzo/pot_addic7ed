@@ -78,7 +78,6 @@ string ServerLogin(string User, string Pass)
 array<dictionary> SubtitleSearch(string MovieFileName, dictionary MovieMetaData)
 {
 	array<dictionary> ret;
-	string hash = GetHash(MovieFileName);
 	string title = string(MovieMetaData["title"]);
 	string country = string(MovieMetaData["country"]);
 	string year = string(MovieMetaData["year"]);
