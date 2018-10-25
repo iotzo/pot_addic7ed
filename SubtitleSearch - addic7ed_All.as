@@ -23,29 +23,6 @@ string Username="";
 string Password="";
 string Header = "Referer: http://www.addic7ed.com/ \n Cookie: wikisubtitlesuser=xxxxxx; wikisubtitlespass=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx;"; 
 
-uint64 GetHash(string FileName)
-{
-	int64 size = 0;
-	uint64 hash = 0;
-	uint64 fp = HostFileOpen(FileName);
-
-	if (fp != 0)
-	{
-		size = HostFileLength(fp);
-		hash = size;
-		
-		for (int i = 0; i < 65536 / 8; i++) hash = hash + HostFileReadQWORD(fp);
-		
-		int64 ep = size - 65536;
-		if (ep < 0) ep = 0;
-		HostFileSeek(fp, ep, 0);
-		for (int i = 0; i < 65536 / 8; i++) hash = hash + HostFileReadQWORD(fp);
-		
-		HostFileClose(fp);
-	}
-	
-	return hash;
-}
 
 string API_URL = "http://www.addic7ed.com";
 
